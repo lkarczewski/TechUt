@@ -44,84 +44,64 @@ public class ClubServiceJDBC implements ClubService {
 				statement.executeUpdate(createTableClub);
 
 			addClubStmt = connection.prepareStatement("INSERT INTO Club (name, date_of_foundation, is_champion, assets) VALUES (?, ?, ?, ?)");
+			deleteClubStmt = connection.prepareStatement("DELETE FROM Club WHERE id=?");
+			getAllClubsStmt = connection.prepareStatement("SELECT id, name, date_of_foundation, is_champion, assets FROM Club");
 			deleteAllClubsStmt = connection.prepareStatement("DELETE FROM Club");
-			getAllClubsStmt = connection.prepareStatement("SELECT id, name, yob FROM Person");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	Connection getConnection() {
-		return connection;
+	public Connection getConnection() {
+		return this.connection;
 	}
 
-	void clearPersons() {
+	@Override
+	public void addClub(Club club) throws SQLException {
+		addClubStmt.setString(1,club.getName());
+		addClubStmt.setString(2,club.getDateOfFoundation());
+		addClubStmt.setBoolean(3,club.isChampion());
+		addClubStmt.setDouble(4,club.getAssets());
+		addClubStmt.executeUpdate();
+	}
+	
+	@Override
+	public void deleteClub(Club club) throws SQLException {
+        deleteClubStmt.setLong(1, club.getId());
+        deleteClubStmt.executeUpdate();
+	}
+
+	@Override
+	public List<Club> getAllClubs() {
+		List<Club> clubs = new ArrayList<Club>();
+		
+		try {
+			ResultSet rs = getAllClubsStmt.executeQuery();
+			while(rs.next()) {
+				Club c = new Club();
+				c.setId(rs.getLong("id"));
+				c.setName(rs.getString("name"));
+				c.setDateOfFoundation(rs.getString("date_of_foundation"));
+				c.setChampion(rs.getBoolean("is_champion"));
+				c.setAssets(rs.getDouble("assets"));
+				clubs.add(c);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return clubs;
+	}
+
+	@Override
+	public void deleteAllClubs() {
 		try {
 			deleteAllClubsStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public int addClub(Club person) {
-		int count = 0;
-		try {
-			addClubStmt.setString(1, person.getName());
-			addClubStmt.setInt(2, person.getYob());
-
-			count = addClubStmt.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	@Override
-	public List<Club> getAllClubs() {
-		List<Club> persons = new ArrayList<Club>();
-
-		try {
-			ResultSet rs = getAllClubsStmt.executeQuery();
-
-			while (rs.next()) {
-				Club p = new Club();
-				p.setId(rs.getInt("id"));
-				p.setName(rs.getString("name"));
-				p.setYob(rs.getInt("yob"));
-				persons.add(p);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return persons;
-	}
-
-	@Override
-	public void addAllPersons(List<Club> persons) {
-
-		try {
-			connection.setAutoCommit(false);
-			for (Club person : persons) {
-				addClubStmt.setString(1, person.getName());
-				addClubStmt.setInt(2, person.getYob());
-				addClubStmt.executeUpdate();
-			}
-			connection.commit();
-			
-		} catch (SQLException exception) {
-			
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				//!!!! ALARM
-			}
-		}
-
-	}
-
+	
+	
 }
