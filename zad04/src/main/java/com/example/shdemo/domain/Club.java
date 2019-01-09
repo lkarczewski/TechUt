@@ -6,7 +6,8 @@ import java.util.List;
 @Entity
 @NamedQueries( {
         @NamedQuery(name = "club.id", query = "SELECT c FROM Club c WHERE c.id = :id"),
-        @NamedQuery(name = "club.all", query = "SELECT c FROM Club c")
+        @NamedQuery(name = "club.all", query = "SELECT c FROM Club c"),
+        @NamedQuery(name = "club.count", query = "SELECT COUNT(c) FROM Club c")
 })
 public class Club {
 

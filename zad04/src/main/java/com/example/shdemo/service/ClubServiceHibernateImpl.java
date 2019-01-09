@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Component
+@Transactional
 public class ClubServiceHibernateImpl implements ClubService {
 
     @Autowired
@@ -31,7 +33,12 @@ public class ClubServiceHibernateImpl implements ClubService {
 
     @Override
     public void deleteClub(Club club) {
+        sessionFactory.getCurrentSession().delete(club);
+    }
 
+    @Override
+    public Long updateClub(Club club) {
+        return (Long)sessionFactory.getCurrentSession().save(club);
     }
 
     @Override
@@ -52,9 +59,13 @@ public class ClubServiceHibernateImpl implements ClubService {
 
     @Override
     public void deletePlayer(Player player) {
-
+        sessionFactory.getCurrentSession().delete(player);
     }
 
+    @Override
+    public Long updatePlayer(Player player) {
+        return (Long)sessionFactory.getCurrentSession().save(player);
+    }
     @Override
     public List<Player> getAllPlayers() {
         return sessionFactory.getCurrentSession().getNamedQuery("player.all").list();
@@ -62,6 +73,31 @@ public class ClubServiceHibernateImpl implements ClubService {
 
     @Override
     public Player findPlayerById(long id) {
-        return (Player)sessionFactory.getCurrentSession().getNamedQuery("player.id").setLong("id", id).uniqueResult();
+        return (Player) sessionFactory.getCurrentSession().getNamedQuery("player.id").setLong("id", id).uniqueResult();
+    }
+
+    @Override
+    public void assignPlayerToClub(long playerId, long clubId) {
+        Player player = findPlayerById(playerId);
+        Club club = findClubById(clubId);
+
+        if(player.getClub() == null) {
+            player.setClub(club);
+        }
+        else return;
+
+        sessionFactory.getCurrentSession().update(player);
+    }
+
+    @Override
+    public void removePlayerFromClub(long playerId) {
+        Player player = findPlayerById(playerId);
+
+        if(player.getClub() != null) {
+            player.setClub(null);
+        }
+        else return;
+
+        sessionFactory.getCurrentSession().update(player);
     }
 }
