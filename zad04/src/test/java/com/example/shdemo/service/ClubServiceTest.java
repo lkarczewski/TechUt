@@ -35,22 +35,17 @@ public class ClubServiceTest {
 	private final boolean CLUB_CHAMPION_2 = false;
 	private final double CLUB_ASSETS_2 = 5000000;
 	
-//	private final String PLAYER_FIRST_NAME_1 = "";
-//	private final String PLAYER_LAST_NAME_1 = "";
-//	private final String PLAYER_NATIONALITY_1 = "";
-//	private final Club PLAYER_CLUB_1;
+	private final String PLAYER_FIRST_NAME_1 = "Didier";
+	private final String PLAYER_LAST_NAME_1 = "Deschamps";
+	private final String PLAYER_NATIONALITY_1 = "Francja";
+	
+	private final String PLAYER_FIRST_NAME_2 = "Robert";
+	private final String PLAYER_LAST_NAME_2 = "Pires";
+	private final String PLAYER_NATIONALITY_2 = "Francja";
 	
 
 	@Test
 	public void addClubTest() {
-		
-		List<Club> retrievedClubs = clubService.getAllClubs();
-		
-		for (Club club : retrievedClubs) {
-			if (club.getName().equals(CLUB_NAME_1)) {
-				clubService.deleteClub(club);
-			}
-		}
 		
 		Club club = new Club();
 		club.setName(CLUB_NAME_1);
@@ -123,5 +118,22 @@ public class ClubServiceTest {
 		clubService.addClub(club2);
 		
 		assertEquals(2, clubService.getAllClubs().size());
+	}
+	
+	@Test
+	public void addPlayer() {
+		
+		Player player = new Player();
+		player.setFirstName(PLAYER_FIRST_NAME_1);
+		player.setLastName(PLAYER_LAST_NAME_1);
+		player.setNationality(PLAYER_NATIONALITY_1);
+		
+		clubService.addPlayer(player);
+		
+		Player retruev = clubService.findClubById(club.getId());
+		assertEquals(CLUB_NAME_1, retrievedClub.getName());
+		assertEquals(CLUB_DOF_1, retrievedClub.getDateOfFoundation());
+		assertEquals(CLUB_CHAMPION_1, retrievedClub.isChampion());
+		assertEquals(CLUB_ASSETS_1, retrievedClub.getAssets(), 0);
 	}
 }
