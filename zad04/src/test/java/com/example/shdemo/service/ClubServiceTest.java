@@ -120,7 +120,7 @@ public class ClubServiceTest {
 		assertEquals(2, clubService.getAllClubs().size());
 	}
 	
-	@Test
+	/*@Test
 	public void addPlayer() {
 		
 		Player player = new Player();
@@ -135,5 +135,5 @@ public class ClubServiceTest {
 		assertEquals(CLUB_DOF_1, retrievedClub.getDateOfFoundation());
 		assertEquals(CLUB_CHAMPION_1, retrievedClub.isChampion());
 		assertEquals(CLUB_ASSETS_1, retrievedClub.getAssets(), 0);
-	}
+	}*/
 }
