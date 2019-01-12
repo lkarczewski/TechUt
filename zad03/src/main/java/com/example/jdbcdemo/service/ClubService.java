@@ -13,9 +13,11 @@ public interface ClubService {
 	boolean addClubs(List<Club> clubs) throws SQLException;
 	boolean deleteClubById(long id);
 	boolean deleteClubByName(String name);
-	boolean deleteAllClubs(List<Club> clubs);
+	boolean deleteAllClubs();
+	boolean deleteClubList(List<Club> clubs);
 	Club getClubById(long id);
 	Club getClubByName(String name);
 	List<Club> getAllClubs();
-	List<Club> getClubsByAssetsInRange(double min, double max);
+	List<Club> getClubsByAssetsInRange(double min, double max, String order);
+	List<Club> getClubsSortedByDate(String order);
 }
