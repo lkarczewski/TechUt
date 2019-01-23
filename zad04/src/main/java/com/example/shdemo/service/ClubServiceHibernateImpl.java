@@ -1,5 +1,6 @@
 package com.example.shdemo.service;
 
+import com.example.shdemo.domain.Boots;
 import com.example.shdemo.domain.Club;
 import com.example.shdemo.domain.Player;
 
@@ -64,8 +65,10 @@ public class ClubServiceHibernateImpl implements ClubService {
 
     @Override
     public Long updatePlayer(Player player) {
+
         return (Long)sessionFactory.getCurrentSession().save(player);
     }
+
     @Override
     public List<Player> getAllPlayers() {
         return sessionFactory.getCurrentSession().getNamedQuery("player.all").list();
@@ -73,13 +76,37 @@ public class ClubServiceHibernateImpl implements ClubService {
 
     @Override
     public Player findPlayerById(long id) {
-        return (Player) sessionFactory.getCurrentSession().getNamedQuery("player.id").setLong("id", id).uniqueResult();
+        return (Player)sessionFactory.getCurrentSession().getNamedQuery("player.id").setLong("id", id).uniqueResult();
     }
 
     @Override
-    public void assignPlayerToClub(long playerId, long clubId) {
-        Player player = findPlayerById(playerId);
-        Club club = findClubById(clubId);
+    public Long addBoots(Boots boots) {
+        boots.setId(null);
+        return (Long)sessionFactory.getCurrentSession().save(boots);
+    }
+
+    @Override
+    public void deleteBoots(Boots boots) {
+        sessionFactory.getCurrentSession().delete(boots);
+    }
+
+    @Override
+    public Long updateBoots(Boots boots) {
+        return (Long)sessionFactory.getCurrentSession().save(boots);
+    }
+
+    @Override
+    public List<Boots> getAllBoots() {
+        return sessionFactory.getCurrentSession().getNamedQuery("boot.all").list();
+    }
+
+    @Override
+    public Boots findBootsById(long id) {
+        return (Boots)sessionFactory.getCurrentSession().getNamedQuery("boot.id").setLong("id", id).uniqueResult();
+    }
+
+    @Override
+    public void assignPlayerToClub(Player player, Club club) {
 
         if(player.getClub() == null) {
             player.setClub(club);
@@ -90,11 +117,30 @@ public class ClubServiceHibernateImpl implements ClubService {
     }
 
     @Override
-    public void removePlayerFromClub(long playerId) {
-        Player player = findPlayerById(playerId);
+    public void removePlayerFromClub(Player player) {
 
         if(player.getClub() != null) {
             player.setClub(null);
+        }
+        else return;
+
+        sessionFactory.getCurrentSession().update(player);
+    }
+
+    @Override
+    public void givePlayerBoots(Player player, Boots boots) {
+        if(player.getBoots() == null) {
+            player.setBoots(boots);
+        }
+        else return;
+
+        sessionFactory.getCurrentSession().update(player);
+    }
+
+    @Override
+    public void takePlayerBoots(Player player) {
+        if(player.getBoots() != null) {
+            player.setBoots(null);
         }
         else return;
 

@@ -120,7 +120,7 @@ public class ClubServiceTest {
 		assertEquals(2, clubService.getAllClubs().size());
 	}
 	
-	/*@Test
+	@Test
 	public void addPlayer() {
 		
 		Player player = new Player();
@@ -130,10 +130,9 @@ public class ClubServiceTest {
 		
 		clubService.addPlayer(player);
 		
-		Player retruev = clubService.findClubById(club.getId());
-		assertEquals(CLUB_NAME_1, retrievedClub.getName());
-		assertEquals(CLUB_DOF_1, retrievedClub.getDateOfFoundation());
-		assertEquals(CLUB_CHAMPION_1, retrievedClub.isChampion());
-		assertEquals(CLUB_ASSETS_1, retrievedClub.getAssets(), 0);
-	}*/
+		Player retrievedPlayer = clubService.findPlayerById(player.getId());
+		assertEquals(PLAYER_FIRST_NAME_1, retrievedPlayer.getFirstName());
+		assertEquals(PLAYER_LAST_NAME_1, retrievedPlayer.getLastName());
+		assertEquals(PLAYER_NATIONALITY_1, retrievedPlayer.getNationality());
+	}
 }

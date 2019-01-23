@@ -26,6 +26,9 @@ public class Player {
     @ManyToOne
     private Club club;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Boots boots;
+
     public Player() { }
 
     public Player(String firstName, String lastName, String nationality, Club club) {
@@ -67,11 +70,17 @@ public class Player {
         this.nationality = nationality;
     }
 
-    public Club getClub() {
-        return club;
-    }
+    public Club getClub() { return club; }
 
     public void setClub(Club club) {
         this.club = club;
+    }
+
+    public Boots getBoots() {
+        return boots;
+    }
+
+    public void setBoots(Boots boots) {
+        this.boots = boots;
     }
 }

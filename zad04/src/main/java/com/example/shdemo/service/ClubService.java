@@ -1,5 +1,6 @@
 package com.example.shdemo.service;
 
+import com.example.shdemo.domain.Boots;
 import com.example.shdemo.domain.Club;
 import com.example.shdemo.domain.Player;
 
@@ -19,6 +20,15 @@ public interface ClubService {
     List<Player> getAllPlayers();
     Player findPlayerById(long id);
 
-    void assignPlayerToClub(long playerId, long clubId);
-    void removePlayerFromClub(long playerId);
+    Long addBoots(Boots boots);
+    void deleteBoots(Boots boots);
+    Long updateBoots(Boots boots);
+    List<Boots> getAllBoots();
+    Boots findBootsById(long id);
+
+    void assignPlayerToClub(Player player, Club club);
+    void removePlayerFromClub(Player player);
+
+    void givePlayerBoots(Player player, Boots boots);
+    void takePlayerBoots(Player player);
 }

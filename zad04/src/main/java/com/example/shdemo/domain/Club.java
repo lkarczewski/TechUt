@@ -27,7 +27,7 @@ public class Club {
     @Column
     private double assets;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Player> players;
 
     public Club() { }
