@@ -358,31 +358,4 @@ public class ClubServiceTest {
 
 		assertEquals(null, retrievedPlayer.getBoots());
 	}
-
-	/*@Test
-	public void givePlayerTitle() {
-		Player player = new Player(PLAYER_FIRST_NAME_1, PLAYER_LAST_NAME_1, PLAYER_NATIONALITY_1);
-		Title title = new Title(TITLE_NAME_1, TITLE_YEAR_1);
-
-		clubService.addPlayer(player);
-		clubService.addTitle(title);
-		clubService.givePlayerTitle(player, title);
-		Player retrievedPlayer = clubService.findPlayerById(player.getId());
-
-		assertEquals(1, retrievedPlayer.getTitles().size());
-	}*/
-
-	/*@Test
-	public void removePlayerTitle() {
-		Player player = new Player(PLAYER_FIRST_NAME_1, PLAYER_LAST_NAME_1, PLAYER_NATIONALITY_1);
-		Title title = new Title(TITLE_NAME_1, TITLE_YEAR_1);
-
-		clubService.addPlayer(player);
-		clubService.addTitle(title);
-		clubService.givePlayerTitle(player, title);
-		clubService.removePlayerTitle(player, title);
-		Player retrievedPlayer = clubService.findPlayerById(player.getId());
-
-		assertEquals(0, retrievedPlayer.getTitles().size());
-	}*/
 }
