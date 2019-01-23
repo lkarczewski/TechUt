@@ -359,7 +359,7 @@ public class ClubServiceTest {
 		assertEquals(null, retrievedPlayer.getBoots());
 	}
 
-	@Test
+	/*@Test
 	public void givePlayerTitle() {
 		Player player = new Player(PLAYER_FIRST_NAME_1, PLAYER_LAST_NAME_1, PLAYER_NATIONALITY_1);
 		Title title = new Title(TITLE_NAME_1, TITLE_YEAR_1);
@@ -370,7 +370,7 @@ public class ClubServiceTest {
 		Player retrievedPlayer = clubService.findPlayerById(player.getId());
 
 		assertEquals(1, retrievedPlayer.getTitles().size());
-	}
+	}*/
 
 	/*@Test
 	public void removePlayerTitle() {
