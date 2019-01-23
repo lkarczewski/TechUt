@@ -31,11 +31,10 @@ public class Player {
 
     public Player() { }
 
-    public Player(String firstName, String lastName, String nationality, Club club) {
+    public Player(String firstName, String lastName, String nationality) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nationality = nationality;
-        this.club = club;
     }
 
     public Long getId() {

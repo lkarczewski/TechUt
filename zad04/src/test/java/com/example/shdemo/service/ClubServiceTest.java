@@ -1,5 +1,6 @@
 package com.example.shdemo.service;
 
+import com.example.shdemo.domain.Boots;
 import com.example.shdemo.domain.Club;
 import com.example.shdemo.domain.Player;
 
@@ -42,7 +43,16 @@ public class ClubServiceTest {
 	private final String PLAYER_FIRST_NAME_2 = "Robert";
 	private final String PLAYER_LAST_NAME_2 = "Pires";
 	private final String PLAYER_NATIONALITY_2 = "Francja";
-	
+
+	private final String BOOTS_BRAND_1 = "Adidas";
+	private final String BOOTS_MODEL_1 = "Predator";
+	private final int BOOTS_SIZE_1 = 43;
+
+	private final String BOOTS_BRAND_2 = "Nike";
+	private final String BOOTS_MODEL_2 = "Tiempo";
+	private final int BOOTS_SIZE_2 = 45;
+
+	//TESTY DLA CLUB
 
 	@Test
 	public void addClubTest() {
@@ -79,15 +89,6 @@ public class ClubServiceTest {
 	
 	@Test
 	public void updateClubTest() {
-		
-		List<Club> retrievedClubs = clubService.getAllClubs();
-		
-		for (Club club : retrievedClubs) {
-			if (club.getName().equals(CLUB_NAME_1)) {
-				clubService.deleteClub(club);
-			}
-		}
-		
 		Club club = new Club();
 		club.setName(CLUB_NAME_1);
 		club.setDateOfFoundation(CLUB_DOF_1);
@@ -95,12 +96,15 @@ public class ClubServiceTest {
 		club.setAssets(CLUB_ASSETS_1);
 		
 		clubService.addClub(club);
-		
 		Club retrievedClub = clubService.findClubById(club.getId());
-		retrievedClub.setName(CLUB_NAME_2);
-		retrievedClub.setDateOfFoundation(CLUB_DOF_2);
-		retrievedClub.setChampion(CLUB_CHAMPION_2);
-		retrievedClub.setAssets(CLUB_ASSETS_2);
+		assertEquals(CLUB_NAME_1, retrievedClub.getName());
+
+		club.setName(CLUB_NAME_2);
+		club.setDateOfFoundation(CLUB_DOF_2);
+		club.setChampion(CLUB_CHAMPION_2);
+		club.setAssets(CLUB_ASSETS_2);
+		clubService.updateClub(club);
+		retrievedClub = clubService.findClubById(club.getId());
 		
 		assertEquals(CLUB_NAME_2, retrievedClub.getName());
 		assertEquals(CLUB_DOF_2, retrievedClub.getDateOfFoundation());
@@ -119,9 +123,11 @@ public class ClubServiceTest {
 		
 		assertEquals(2, clubService.getAllClubs().size());
 	}
+
+	//TESTY DLA PLAYER
 	
 	@Test
-	public void addPlayer() {
+	public void addPlayerTest() {
 		
 		Player player = new Player();
 		player.setFirstName(PLAYER_FIRST_NAME_1);
@@ -134,5 +140,100 @@ public class ClubServiceTest {
 		assertEquals(PLAYER_FIRST_NAME_1, retrievedPlayer.getFirstName());
 		assertEquals(PLAYER_LAST_NAME_1, retrievedPlayer.getLastName());
 		assertEquals(PLAYER_NATIONALITY_1, retrievedPlayer.getNationality());
+	}
+
+	@Test
+	public void deletePlayerTest() {
+		Player player = new Player();
+		player.setFirstName(PLAYER_FIRST_NAME_1);
+		player.setLastName(PLAYER_LAST_NAME_1);
+		player.setNationality(PLAYER_NATIONALITY_1);
+
+		clubService.addPlayer(player);
+		assertEquals(1,clubService.getAllPlayers().size());
+		clubService.deletePlayer(player);
+		assertEquals(0, clubService.getAllPlayers().size());
+	}
+
+	@Test
+	public void updatePlayerTest() {
+		Player player = new Player();
+		player.setFirstName(PLAYER_FIRST_NAME_1);
+		player.setLastName(PLAYER_LAST_NAME_1);
+		player.setNationality(PLAYER_NATIONALITY_1);
+		clubService.addPlayer(player);
+		Player retrievedPlayer = clubService.findPlayerById(player.getId());
+		assertEquals(PLAYER_FIRST_NAME_1, retrievedPlayer.getFirstName());
+
+		player.setFirstName(PLAYER_FIRST_NAME_2);
+		player.setLastName(PLAYER_LAST_NAME_2);
+		player.setNationality(PLAYER_NATIONALITY_2);
+		clubService.updatePlayer(player);
+		retrievedPlayer = clubService.findPlayerById(player.getId());
+
+		assertEquals(PLAYER_FIRST_NAME_2, retrievedPlayer.getFirstName());
+		assertEquals(PLAYER_LAST_NAME_2, retrievedPlayer.getLastName());
+		assertEquals(PLAYER_NATIONALITY_2, retrievedPlayer.getNationality());
+	}
+
+	@Test
+	public void getAllPlayersTest() {
+
+		Player player1 = new Player(PLAYER_FIRST_NAME_1, PLAYER_LAST_NAME_1, PLAYER_NATIONALITY_1);
+		Player player2 = new Player(PLAYER_FIRST_NAME_2, PLAYER_LAST_NAME_2, PLAYER_NATIONALITY_2);
+
+		clubService.addPlayer(player1);
+		clubService.addPlayer(player2);
+
+		assertEquals(2, clubService.getAllPlayers().size());
+	}
+
+	//TESTY DLA BOOTS
+
+	@Test
+	public void addBootsTest() {
+		Boots boots = new Boots();
+		boots.setBrand(BOOTS_BRAND_1);
+		boots.setModel(BOOTS_MODEL_1);
+		boots.setSize(BOOTS_SIZE_1);
+		clubService.addBoots(boots);
+
+		Boots retrievedBoots = clubService.findBootsById(boots.getId());
+		assertEquals(BOOTS_BRAND_1, retrievedBoots.getBrand());
+		assertEquals(BOOTS_MODEL_1, retrievedBoots.getModel());
+		assertEquals(BOOTS_SIZE_1, retrievedBoots.getSize());
+	}
+
+	@Test
+	public void deleteBootsTest() {
+		Boots boots = new Boots();
+		boots.setBrand(BOOTS_BRAND_1);
+		boots.setModel(BOOTS_MODEL_1);
+		boots.setSize(BOOTS_SIZE_1);
+		clubService.addBoots(boots);
+
+		assertEquals(1, clubService.getAllBoots().size());
+		clubService.deleteBoots(boots);
+		assertEquals(0, clubService.getAllBoots().size());
+	}
+
+	@Test
+	public void updateBootsTest() {
+		Boots boots = new Boots();
+		boots.setBrand(BOOTS_BRAND_1);
+		boots.setModel(BOOTS_MODEL_1);
+		boots.setSize(BOOTS_SIZE_1);
+		clubService.addBoots(boots);
+
+		Boots retrievedBoots = clubService.findBootsById(boots.getId());
+		boots.setBrand(BOOTS_BRAND_2);
+		boots.setModel(BOOTS_MODEL_2);
+		boots.setSize(BOOTS_SIZE_2);
+		clubService.updateBoots(boots);
+		retrievedBoots = clubService.findBootsById(boots.getId());
+
+		assertEquals(BOOTS_BRAND_2, retrievedBoots.getBrand());
+		assertEquals(BOOTS_MODEL_2, retrievedBoots.getModel());
+		assertEquals(BOOTS_SIZE_2, retrievedBoots.getSize());
 	}
 }
