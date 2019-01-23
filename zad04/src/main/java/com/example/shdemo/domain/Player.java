@@ -1,6 +1,7 @@
 package com.example.shdemo.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NamedQueries( {
@@ -28,6 +29,18 @@ public class Player {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Boots boots;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "player_title",
+            joinColumns = {
+                    @JoinColumn(name = "player_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "title_id")
+            }
+    )
+    public List<Title> titles;
 
     public Player() { }
 
@@ -81,5 +94,13 @@ public class Player {
 
     public void setBoots(Boots boots) {
         this.boots = boots;
+    }
+
+    public List<Title> getTitles() {
+        return titles;
+    }
+
+    public void setTitles(List<Title> titles) {
+        this.titles = titles;
     }
 }

@@ -3,6 +3,7 @@ package com.example.shdemo.service;
 import com.example.shdemo.domain.Boots;
 import com.example.shdemo.domain.Club;
 import com.example.shdemo.domain.Player;
+import com.example.shdemo.domain.Title;
 
 import java.util.List;
 
@@ -26,9 +27,18 @@ public interface ClubService {
     List<Boots> getAllBoots();
     Boots findBootsById(long id);
 
+    Long addTitle(Title title);
+    void deleteTitle(Title title);
+    Long updateTitle(Title title);
+    List<Title> getAllTitles();
+    Title findTitleById(long id);
+
     void assignPlayerToClub(Player player, Club club);
     void removePlayerFromClub(Player player);
 
     void givePlayerBoots(Player player, Boots boots);
     void takePlayerBoots(Player player);
+
+    void givePlayerTitle(Player player, Title title);
+    void removePlayerTitle(Player player, Title title);
 }

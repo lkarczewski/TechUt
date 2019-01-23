@@ -4,6 +4,7 @@ import com.example.shdemo.domain.Boots;
 import com.example.shdemo.domain.Club;
 import com.example.shdemo.domain.Player;
 
+import com.example.shdemo.domain.Title;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -106,6 +107,32 @@ public class ClubServiceHibernateImpl implements ClubService {
     }
 
     @Override
+    public Long addTitle(Title title) {
+        title.setId(null);
+        return (Long)sessionFactory.getCurrentSession().save(title);
+    }
+
+    @Override
+    public void deleteTitle(Title title) {
+        sessionFactory.getCurrentSession().delete(title);
+    }
+
+    @Override
+    public Long updateTitle(Title title) {
+        return (Long)sessionFactory.getCurrentSession().save(title);
+    }
+
+    @Override
+    public List<Title> getAllTitles() {
+        return sessionFactory.getCurrentSession().getNamedQuery("title.all").list();
+    }
+
+    @Override
+    public Title findTitleById(long id) {
+        return (Title)sessionFactory.getCurrentSession().getNamedQuery("title.id").setLong("id", id).uniqueResult();
+    }
+
+    @Override
     public void assignPlayerToClub(Player player, Club club) {
 
         if(player.getClub() == null) {
@@ -145,5 +172,38 @@ public class ClubServiceHibernateImpl implements ClubService {
         else return;
 
         sessionFactory.getCurrentSession().update(player);
+    }
+
+    @Override
+    public void givePlayerTitle(Player player, Title title) {
+        player = (Player)getSessionFactory().getCurrentSession().get(Player.class, player.getId());
+        title = (Title)getSessionFactory().getCurrentSession().get(Title.class, title.getId());
+
+        if(player != null && title != null) {
+            List<Title> playerTitles = player.getTitles();
+            if(!playerTitles.contains(title)) {
+                playerTitles.add(title);
+            }
+            player.setTitles(playerTitles);
+            updatePlayer(player);
+            sessionFactory.getCurrentSession().update(player);
+        }
+    }
+
+    @Override
+    public void removePlayerTitle(Player player, Title title) {
+        player = (Player)getSessionFactory().getCurrentSession().get(Player.class, player.getId());
+        title = (Title)getSessionFactory().getCurrentSession().get(Title.class, title.getId());
+
+        if(player != null && title != null) {
+            List<Title> playerTitles = player.getTitles();
+            if(playerTitles.contains(title)) {
+                playerTitles.remove(title);
+            }
+            else return;
+            player.setTitles(playerTitles);
+            updatePlayer(player);
+            sessionFactory.getCurrentSession().update(player);
+        }
     }
 }
